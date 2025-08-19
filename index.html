@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>表單提交</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; }
+    form { max-width: 400px; margin: auto; }
+    label { display: block; margin-top: 15px; }
+    input, select, button {
+      width: 100%; padding: 8px; margin-top: 5px;
+      border: 1px solid #ccc; border-radius: 5px;
+    }
+    button { background: #4CAF50; color: white; cursor: pointer; }
+    button:hover { background: #45a049; }
+  </style>
+</head>
+<body>
+  <h2>學生設備調查表</h2>
+  <form id="myForm">
+    <label>姓名：
+      <input type="text" name="姓名" required>
+    </label>
+
+    <label>年級：
+      <select name="年級" required>
+        <option value="一年級">一年級</option>
+        <option value="二年級">二年級</option>
+        <option value="三年級">三年級</option>
+      </select>
+    </label>
+
+    <label>科別：
+      <select name="科別" required>
+        <option value="機械科">機械科</option>
+        <option value="電機科">電機科</option>
+        <option value="汽車科">汽車科</option>
+      </select>
+    </label>
+
+    <label>班級：
+      <select name="班級" required>
+        <option value="甲班">甲班</option>
+        <option value="乙班">乙班</option>
+      </select>
+    </label>
+
+    <label>設備：
+      <select name="設備" required>
+        <option value="電腦">電腦</option>
+        <option value="平板">平板</option>
+      </select>
+    </label>
+
+    <button type="submit">送出</button>
+  </form>
+
+  <p id="response"></p>
+
+  <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycbyLlSBqzALuiKIlOLcUoWFe6XTQG73JWB2lk3IsG-qfHM9l3hSt0uM6lOTTR-8jAn0oTw/exec";
+    const form = document.getElementById("myForm");
+    const responseMsg = document.getElementById("response");
+
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+      fetch(scriptURL, { method: "POST", body: new FormData(form)})
+        .then(res => {
+          responseMsg.innerText = "✅ 資料已送出成功！";
+          form.reset();
+        })
+        .catch(err => {
+          responseMsg.innerText = "❌ 發生錯誤：" + err.message;
+        });
+    });
+  </script>
+</body>
+</html>
